@@ -12,7 +12,7 @@ type CSVFileImportProps = {
 
 export default function CSVFileImport({ url, title }: CSVFileImportProps) {
   const [file, setFile] = React.useState<File | null>();
-  const [error, setError] = React.useState<{ message: string }>(null);
+  const [error, setError] = React.useState<{ message: string } | null>(null);
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
@@ -55,8 +55,9 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
           },
         });
         console.log("Result: ", result);
-      } catch (e: { message: string }) {
-        setError({ message: e.message });
+      } catch (e) {
+        const error = e as { message: string };
+        setError({ message: error.message });
       }
 
       setFile(null);
